@@ -1,0 +1,342 @@
+#:kivy 1.11
+
+<PopupRetrieval>:
+    auto_dismiss: False
+    size_hint: 0.5, 0.5
+    spacing: 10
+    padding: 20
+    pb_update: _pb_update
+    spinner_layout: _spinner_layout
+    update_button: _update_button
+    cancel_button: _cancel_button
+    message_label: _message_label
+    default_button: _default_button
+    BoxLayout:
+        id: _update_widget
+        orientation:'vertical'
+        GridLayout:
+            cols: 2
+            spacing: 10
+            padding: 20
+            size_hint_y: 0.4
+            disabled: True
+            id: _spinner_layout
+        Label:
+            id: _message_label
+            text: 'Retrieving data'
+            size_hint_y: None
+            height: '45sp'
+        ProgressBar:
+            id: _pb_update
+            value: 50
+            size_hint_y: 0.1
+        GridLayout:
+            cols: 3
+            size_hint_y: None
+            height: '45sp'
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()
+                id: _cancel_button
+            Button:
+                text: 'Default'
+                disabled: True
+                on_release: root.default()
+                id: _default_button
+            Button:
+                id: _update_button
+                text: 'Update'
+                disabled: True
+                on_release: root.update()
+
+<HydraulicSetupDialog>:
+    title: 'Hydraulics Setup'
+    auto_dismiss: False
+    size_hint: 0.5, 0.5
+    spacing: 10
+    padding: 20
+    in_line_switch: _in_line_switch
+    out_line_switch: _out_line_switch
+    GridLayout:
+        cols:2
+        spacing: 10
+        padding: 20
+        Label: 
+            text: 'In valve & pump'
+        Switch:
+            active: False  
+            id: _in_line_switch
+        Label: 
+            text: 'Out valve & pump'
+        Switch:
+            active: False
+            id: _out_line_switch
+        Button:
+            text: 'Cancel'
+            size_hint: 1, None
+            height: '45sp'
+            on_release: root.dismiss()
+        Button:
+            text: 'Update'
+            size_hint: 1, None
+            height: '45sp'
+            on_release: root.update()
+
+<ExportDialog>:
+    title: 'Data Export'
+    auto_dismiss: False
+    size_hint: 0.5, 0.5
+    spacing: 10
+    padding: 20
+    data_export_cb: _data_export_cb
+    data_format_spinner: _data_format_spinner
+    ok_button: _ok_button
+    folder_button: _folder_button
+    folder_path: _folder_path
+    folder_path_scroll: _folder_path_scroll
+    custom_header: _custom_header
+    ColoredGridLayoutPopup:
+        cols:2
+        spacing: 10
+        padding: 20
+        Label: 
+            text: 'Activate Data Export'
+        CheckBox:
+            id: _data_export_cb
+        Label:
+            text: 'Data Format'
+        Spinner: 
+            values: ['txt','csv']
+            text: 'txt'
+            disabled: True
+            id: _data_format_spinner
+        Button:
+            text: 'Data Folder'
+            disabled: True
+            id: _folder_button
+            on_release: root.folder_selection()
+        ScrollView:
+            do_scroll_y: False
+            bar_width: 12
+            scroll_type: ['bars','content']
+            disabled: True
+            id: _folder_path_scroll
+            Label:
+                size_hint: None, None     
+                size: self.texture_size  
+                id: _folder_path
+        Label:
+            text: 'Custom Header'
+        TextInput:
+            id: _custom_header
+        Button:
+            text: 'Cancel'
+            on_release: root.dismiss()
+        Button:
+            text: 'OK'
+            on_release: root.update()
+            id: _ok_button
+
+<FolderPickerDialog>:
+    title: 'Folder Selection'
+    filechooser: _filechooser
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        spacing: 10
+        FileChooserListView:
+            id: _filechooser
+            size_hint_y: 0.8
+
+        BoxLayout:
+            size_hint_y: None
+            height: '45sp'
+            spacing: 10
+            Button:
+                text: "Cancel"
+                on_release: root.dismiss()
+
+            Button:
+                text: "Select"
+                on_release: root.folder_selected()
+
+<TemperatureModulationDialog>:
+    title: 'Temperature Modulation'
+    size_hint: 0.5, 0.5
+    spacing: 10
+    padding: 20
+    BoxLayout:
+        orientation: 'vertical'
+        GridLayout:
+            cols: 2
+            Label:
+                text: '5V'
+            CheckBox:
+                active: True if root.selected == "5V" else False
+                group: "_temperature_modulation"
+                on_active: root.selected = "5V"
+            Label:
+                text: '0V'
+            CheckBox:
+                active: True if root.selected == "0V" else False
+                group: "_temperature_modulation"
+                on_active: root.selected = "0V"
+            Label:
+                text: 'Ramp'
+            CheckBox:
+                group: "_temperature_modulation"
+                active: True if root.selected == "Ramp" else False
+                on_active: root.selected = "Ramp"
+            Label:
+                text: 'Square'
+            CheckBox:
+                active: True if root.selected == "Square" else False
+                group: "_temperature_modulation"
+                on_active: root.selected = "Square"
+            Label:
+                text: 'Sine'
+            CheckBox:
+                active: True if root.selected == "Sine" else False
+                group: "_temperature_modulation"
+                on_active: root.selected = "Sine"
+            Label:
+                text: 'Triangle'
+            CheckBox:
+                active: True if root.selected == "Triangle" else False
+                group: "_temperature_modulation"
+                on_active: root.selected = "Triangle"
+            Label:
+                text: 'Sq+Tr'
+            CheckBox:
+                active: True if root.selected == "Sq+Tr" else False
+                group: "_temperature_modulation"
+                on_active: root.selected = "Sq+Tr"
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            height: '60sp'
+            spacing: 10
+            padding: 20
+            Button:
+                text:'Cancel'
+                on_release: root.dismiss()
+            Button:
+                text: 'OK'
+                on_release: root.ok_pressed()
+
+<CheckStreaming>:
+    title: 'Streaming without saving?'
+    size_hint: 0.5, 0.3
+    spacing: 10
+    padding: 20
+    BoxLayout:
+        orientation:'vertical'
+        Label:
+            text: 'Do you want to stream data without saving them?'
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            height: '60sp'
+            spacing: 10
+            padding: 20
+            Button:
+                text:'Yes'
+                on_release: root.dismiss()
+            Button:
+                text: 'No'
+                on_release: root.ok_pressed()
+                focus: True
+
+<ProtocolConfigurationDialog>:
+    title: 'Protocol Configuration'
+    size_hint: 0.5, 0.3
+    spacing: 10
+    padding: 20
+    cleaning_slider: _cleaning_slider
+    measurement_slider: _measuring_slider
+    recovery_slider: _recovery_slider
+    cleaning_stage_duration: self.cleaning_slider.value
+    measurement_stage_duration: self.measurement_slider.value
+    recovery_stage_duration: self.recovery_slider.value
+    BoxLayout:
+        orientation:'vertical'
+        GridLayout:
+            cols: 3
+            spacing: 10
+            Label:
+                text: 'Cleaning'
+            Slider:
+                id: _cleaning_slider
+                min: 1
+                max: 20
+                step: 1
+                value: root.cleaning_stage_duration
+            Label:
+                text: str(int(_cleaning_slider.value))
+            Label:
+                text: 'Measuring'
+            Slider:
+                id: _measuring_slider
+                min: 1
+                max: 20
+                step: 1
+                step: 1
+                value: root.measurement_stage_duration
+            Label:
+                text: str(int(_measuring_slider.value))
+            Label:
+                text: 'Recovery'
+            Slider:
+                id: _recovery_slider
+                min: 1
+                max: 20
+                step: 1
+                step: 1
+                value: root.recovery_stage_duration
+            Label:
+                text: str(int(_recovery_slider.value))
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            height: '60sp'
+            spacing: 10
+            padding: 20
+            Button:
+                text:'Cancel'
+                on_release: root.dismiss()
+            Button:
+                text: 'OK'
+                on_release: root.update()
+                focus: True
+
+<ClosePopup>:
+    title: 'Exit App'
+    size_hint: 0.5, 0.3
+    spacing: 10
+    padding: 20
+    BoxLayout:
+        orientation:'vertical'
+        Label:
+            text: 'Do you want to close the app?'
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            height: '60sp'
+            spacing: 10
+            padding: 20
+            Button:
+                text:'Cancel'
+                on_release: root.dismiss()
+            Button:
+                text: 'OK'
+                on_release: root.ok_pressed()
+                focus: True
+
+<ColoredGridLayoutPopup@GridLayout>:
+    canvas.before:
+        Color:
+            rgba: 0.5, 0.5, 0.5, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos

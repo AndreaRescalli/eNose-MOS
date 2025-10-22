@@ -1,0 +1,134 @@
+#:kivy 1.11.1
+
+<Toolbar>:
+    orientation:'vertical'
+    spacing: 10
+    padding: 10
+    tm_config: _tm_config
+    bme280_config: _bme280_config
+    hydraulics: _hydraulics
+    export_button: _export_button
+    protocol_button: _protocol_button
+    canvas.before:
+        Color:
+            rgba: (0.1, 0.1, 0.1, 1.0)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    ToolbarButton:
+        text: 'TM Config'
+        id: _tm_config
+        on_release: root.temperature_modulation_dialog()
+    
+    ToolbarButton:
+        text: 'BME280 Config'
+        id: _bme280_config
+        on_release: root.temp_rh_dialog()
+    
+    ToolbarButton:
+        on_release: root.hydraulic_setup_dialog()
+        id: _hydraulics
+        text: 'Hydraulics'
+    
+    ToolbarButton:
+        id: _export_button
+        on_release: root.export_data_dialog()
+        text: 'Data Export'
+
+    ToolbarButton:
+        id: _protocol_button
+        on_release: root.protocol_dialog()
+        text: 'Protocol'
+
+    Widget:
+
+<ToolbarButton@Button>:
+    size_hint_y: 0.1
+
+<BottomBar>:
+    orientation:'horizontal'
+    spacing: 10
+    message_label: _message_label
+    connection_label: _connection_label
+    canvas.before:
+        Color:
+            rgba: (0.1, 0.1, 0.1, 1.0)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    Label:
+        id: _message_label
+        text: "MOS Sensors GUI"
+        markup: True
+        valign: 'middle'
+    ConnectionLabel:
+        id: _connection_label
+        size_hint_x: 0.1
+    
+<ColoredLabel>:
+    canvas.before:
+        Color:
+            rgba: (1.0, 0., 0., 0.7)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<ConnectionLabel@ColoredLabel>:
+    text: 'Device'
+
+<SensorLabel@ColoredLabel>:
+    text: 'Sensor'
+
+<TopBar>:
+    streaming_button: _start_button
+    padding: '2sp'
+    canvas:
+        Color:
+            rgba: 1, 1, 1, .6
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    size_hint: 1, None
+    height: '45sp'
+    Label:
+        size_hint: None, 1
+        width: '140sp'
+        text: 'MOS Sensors GUI'
+    Widget:
+    Button:
+        id: _start_button
+        disabled: True
+        size_hint: None, 1
+        width: '108sp'
+        text: 'Start'
+        on_release: root.streaming()
+
+<CurrentSessionInformation>:
+    size_hint: 1, None
+    height: '45sp'
+    padding: '2sp'
+    current_stage_label: _current_stage_label
+    current_stage_time: _current_stage_time
+    overall_time: _overall_time
+    canvas:
+        Color:
+            rgba: 1, 1, 1, .6
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    Label:
+        text: 'Stage'
+    Label:
+        id: _current_stage_label
+        text: root.current_stage
+        color: (0,0,0,1)
+    Label:
+        text: 'Time'
+    Label:
+        id: _current_stage_time
+        color: (0,0,0,1)
+    Label:
+        text: 'Session Time'
+    Label:
+        id: _overall_time
+        color: (0,0,0,1)
